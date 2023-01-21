@@ -20,7 +20,7 @@ class PetConstants {
       "age": 5,
       "price": 100.00,
       "image_url":
-          "https://image.petmd.com/files/styles/863x625/public/2022-10/iStock-1397267365.jpg"
+          "http://t3.gstatic.com/licensed-image?q=tbn:ANd9GcQgwWTl6RtTmc4fezxTXkqWRqHFee0_4pJYBdz8eLjv6JYnLuRpo_NlsyL5UZe-uw1NsbLlDaykFowkQ2o"
     },
     {
       "id": 3,

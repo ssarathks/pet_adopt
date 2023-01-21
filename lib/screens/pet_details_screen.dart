@@ -151,10 +151,11 @@ class _PetDetailsScreenState extends State<PetDetailsScreen> {
             border: Border.all(color: Colors.blue.shade900),
             borderRadius: BorderRadius.circular(5)),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: Text(
             '\$${pet.price}',
-            style: Theme.of(context).textTheme.bodyLarge,
+            style:
+                Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 15),
           ),
         ));
   }

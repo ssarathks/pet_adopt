@@ -23,7 +23,7 @@ class PetListTile extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(
-                  flex: 1,
+                  flex: 3,
                   child: Hero(
                     tag: '${HeroTags.PET_DETAIL_IMAGE}${pet.id}',
                     child: SizedBox(
@@ -43,26 +43,48 @@ class PetListTile extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                    flex: 3,
-                    child: Padding(
-                      padding: const EdgeInsets.all(2.0),
-                      child: Column(children: [
-                        Text(
-                          pet.name,
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          pet.breed,
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                        Text(
-                          pet.isAdopted ? 'Already Adopted' : '',
-                          style: Theme.of(context).textTheme.bodySmall,
-                        )
-                      ]),
+                    flex: 7,
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.15,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 8),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    pet.name,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge
+                                        ?.copyWith(fontSize: 20),
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    pet.breed,
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
+                                  ),
+                                ],
+                              ),
+                              Align(
+                                alignment: Alignment.bottomRight,
+                                child: Text(
+                                  pet.isAdopted ? 'Already Adopted' : '',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(color: Colors.green),
+                                ),
+                              )
+                            ]),
+                      ),
                     ))
               ],
             ),
