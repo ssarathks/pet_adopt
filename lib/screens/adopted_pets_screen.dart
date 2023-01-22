@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:pet_adopt/models/pet/pet.dart';
 import 'package:pet_adopt/providers/pet/pet_provider.dart';
 import 'package:pet_adopt/widgets/pet_list_tile.dart';

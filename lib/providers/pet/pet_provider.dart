@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:pet_adopt/constants/pet/database_constant.dart';
 import 'package:pet_adopt/constants/pet/pet_constants.dart';
 import 'package:pet_adopt/models/pet/pet.dart';
+import 'package:pet_adopt/models/pet/pet_filter.dart';
 import 'package:sqflite/sqflite.dart';
 
 class PetProvider extends ChangeNotifier {
@@ -16,11 +17,27 @@ class PetProvider extends ChangeNotifier {
     // var fetchedPets = PetConstants.pets.skip(_pets.length).take(10).toList();
 
     Database db = await PetsDatabase().database;
-    List<Map<String, dynamic>> fetchedPets = await db.query('pet',
-        limit: 10, offset: _pets.length) as List<Map<String, dynamic>>;
+    List<Map<String, dynamic>> fetchedPets =
+        await db.rawQuery('SELECT * FROM pet LIMIT 10 OFFSET ${_pets.length}')
+            as List<Map<String, dynamic>>;
     print('fetched pets is $fetchedPets');
     // CONVERTING TO LIST OF DART OBJECT
     List<Pet> pets = fetchedPets.map<Pet>((pet) => Pet.fromJson(pet)).toList();
+    addPets(pets);
+  }
+
+  void searchPetsWithFilter(PetFilter filter) async {
+    String whereCond = '';
+    if (filter.name.isNotEmpty) {
+      whereCond += ' AND name LIKE \'${filter.name}%\' ';
+    }
+
+    Database db = await PetsDatabase().database;
+    List<Map<String, dynamic>> fetchedPets =
+        await db.rawQuery('SELECT * FROM pet WHERE 1=1 $whereCond ');
+    // CONVERTING TO LIST OF DART OBJECT
+    List<Pet> pets = fetchedPets.map<Pet>((pet) => Pet.fromJson(pet)).toList();
+    _pets = [];
     addPets(pets);
   }
 

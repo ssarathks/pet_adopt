@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:pet_adopt/constants/theme_constants.dart';
 import 'package:pet_adopt/models/pet/pet.dart';
+import 'package:pet_adopt/models/pet/pet_filter.dart';
 import 'package:pet_adopt/providers/pet/pet_provider.dart';
 import 'package:pet_adopt/screens/adopted_pets_screen.dart';
 import 'package:pet_adopt/screens/pet_details_screen.dart';
 import 'package:pet_adopt/widgets/pet_list_tile.dart';
+import 'package:pet_adopt/widgets/search_bar.dart';
 import 'package:provider/provider.dart';
 
 enum PopupOptions { AdoptedPets }
@@ -46,31 +49,57 @@ class _PetListScreenState extends State<PetListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Pets"),
-        actions: [
-          PopupMenuButton(
-              onSelected: (value) => _popupSelectHandler(value),
-              itemBuilder: (ctx) => [
-                    PopupMenuItem(
-                      child: Text("Adopted Pets"),
-                      value: PopupOptions.AdoptedPets,
-                    )
-                  ])
-        ],
-      ),
-      body: Consumer<PetProvider>(
-        builder: (ctx, petModal, _) => ListView.builder(
-          controller: _petListScrollController,
-          itemBuilder: (ctx, index) => InkWell(
-            onTap: () => redirectToDetailsScreen(context, petModal.pets[index]),
-            child: PetListTile(
-              key: ValueKey(petModal.pets[index].id),
-              pet: petModal.pets[index],
+    return GestureDetector(
+      onTap: () {
+        unFocusKeyBoard();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Pets"),
+          actions: [
+            PopupMenuButton(
+                onSelected: (value) => _popupSelectHandler(value),
+                itemBuilder: (ctx) => [
+                      PopupMenuItem(
+                        child: Text("Adopted Pets"),
+                        value: PopupOptions.AdoptedPets,
+                      )
+                    ])
+          ],
+        ),
+        body: Column(
+          children: [
+            Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: ThemeConstants.scaffoldHorizontalPadding),
+                child: SearchBar(
+                  onSearched: searchPetsWithFilterHandler,
+                ),
+              ),
             ),
-          ),
-          itemCount: petModal.pets.length,
+            Expanded(
+              child: Consumer<PetProvider>(
+                builder: (ctx, petModal, _) => petModal.pets.isEmpty
+                    ? Center(
+                        child: Text("No pets found"),
+                      )
+                    : ListView.builder(
+                        controller: _petListScrollController,
+                        itemBuilder: (ctx, index) => InkWell(
+                          onTap: () => redirectToDetailsScreen(
+                              context, petModal.pets[index]),
+                          child: PetListTile(
+                            key: ValueKey(petModal.pets[index].id),
+                            pet: petModal.pets[index],
+                          ),
+                        ),
+                        itemCount: petModal.pets.length,
+                      ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -81,6 +110,16 @@ class _PetListScreenState extends State<PetListScreen> {
         .pushNamed(PetDetailsScreen.routeName, arguments: {'petId': pet.id});
   }
 
+  searchPetsWithFilterHandler(String petName) {
+    unFocusKeyBoard();
+    if (petName.isEmpty) {
+      Provider.of<PetProvider>(context, listen: false).searchPets();
+    }
+    PetFilter filter = PetFilter(name: petName);
+    Provider.of<PetProvider>(context, listen: false)
+        .searchPetsWithFilter(filter);
+  }
+
   _popupSelectHandler(value) {
     switch (value) {
       case PopupOptions.AdoptedPets:
@@ -89,5 +128,13 @@ class _PetListScreenState extends State<PetListScreen> {
       default:
     }
     print(value);
+  }
+
+  unFocusKeyBoard() {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
   }
 }
