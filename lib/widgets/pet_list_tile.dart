@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:pet_adopt/constants/hero_tag_constants.dart';
 import 'package:pet_adopt/constants/theme_constants.dart';
@@ -5,7 +6,9 @@ import 'package:pet_adopt/models/pet/pet.dart';
 
 class PetListTile extends StatelessWidget {
   final Pet pet;
-  const PetListTile({Key? key, required this.pet}) : super(key: key);
+  final bool showAdoptedTime;
+  const PetListTile({Key? key, required this.pet, this.showAdoptedTime = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,53 +47,55 @@ class PetListTile extends StatelessWidget {
                 ),
                 Expanded(
                     flex: 7,
-                    child: Container(
-                      height: MediaQuery.of(context).size.height * 0.15,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 8, horizontal: 8),
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    pet.name,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge
-                                        ?.copyWith(fontSize: 20),
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text(
-                                    pet.breed,
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall,
-                                  ),
-                                ],
-                              ),
-                              Align(
-                                alignment: Alignment.bottomRight,
-                                child: Text(
-                                  pet.isAdopted ? 'Already Adopted' : '',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall
-                                      ?.copyWith(color: Colors.green),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8, horizontal: 8),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  pet.name,
+                                  style: Theme.of(context).textTheme.headline5,
                                 ),
-                              )
-                            ]),
-                      ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  pet.breed,
+                                  style: Theme.of(context).textTheme.subtitle1,
+                                ),
+                              ],
+                            ),
+                            buildFooterText(context)
+                          ]),
                     ))
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget buildFooterText(BuildContext context) {
+    return Align(
+      alignment: Alignment.bottomRight,
+      child: showAdoptedTime
+          ? Text(
+              'Adopted on ${DateFormat.yMMMd('en_US').format(DateTime.parse(pet.adoptedTime))}',
+              style: Theme.of(context).textTheme.bodySmall,
+            )
+          : Text(
+              pet.isAdopted ? 'Already Adopted' : '',
+              style: Theme.of(context)
+                  .textTheme
+                  .bodySmall
+                  ?.copyWith(color: Colors.green),
+            ),
     );
   }
 }

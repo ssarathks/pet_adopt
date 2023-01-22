@@ -3,9 +3,12 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:pet_adopt/models/pet/pet.dart';
 import 'package:pet_adopt/providers/pet/pet_provider.dart';
+import 'package:pet_adopt/screens/adopted_pets_screen.dart';
 import 'package:pet_adopt/screens/pet_details_screen.dart';
 import 'package:pet_adopt/widgets/pet_list_tile.dart';
 import 'package:provider/provider.dart';
+
+enum PopupOptions { AdoptedPets }
 
 class PetListScreen extends StatefulWidget {
   static const routeName = '/pet-list';
@@ -46,6 +49,16 @@ class _PetListScreenState extends State<PetListScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Pets"),
+        actions: [
+          PopupMenuButton(
+              onSelected: (value) => _popupSelectHandler(value),
+              itemBuilder: (ctx) => [
+                    PopupMenuItem(
+                      child: Text("Adopted Pets"),
+                      value: PopupOptions.AdoptedPets,
+                    )
+                  ])
+        ],
       ),
       body: Consumer<PetProvider>(
         builder: (ctx, petModal, _) => ListView.builder(
@@ -66,5 +79,15 @@ class _PetListScreenState extends State<PetListScreen> {
   redirectToDetailsScreen(BuildContext context, Pet pet) {
     Navigator.of(context)
         .pushNamed(PetDetailsScreen.routeName, arguments: {'petId': pet.id});
+  }
+
+  _popupSelectHandler(value) {
+    switch (value) {
+      case PopupOptions.AdoptedPets:
+        Navigator.of(context).pushNamed(AdoptedPetsScreen.routeName);
+        break;
+      default:
+    }
+    print(value);
   }
 }

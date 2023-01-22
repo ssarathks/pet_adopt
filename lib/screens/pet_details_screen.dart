@@ -23,8 +23,9 @@ class _PetDetailsScreenState extends State<PetDetailsScreen> {
     int petId = args['petId'];
     Pet pet = Provider.of<PetProvider>(context).findPetById(petId);
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text(pet.name),
+        backgroundColor: Colors.transparent,
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -39,7 +40,7 @@ class _PetDetailsScreenState extends State<PetDetailsScreen> {
                   tag: '${HeroTags.PET_DETAIL_IMAGE}${pet.id}',
                   child: Container(
                       width: double.infinity,
-                      height: MediaQuery.of(context).size.height * 0.4,
+                      height: MediaQuery.of(context).size.height * 0.5,
                       child: Stack(
                         fit: StackFit.expand,
                         children: [
@@ -65,9 +66,8 @@ class _PetDetailsScreenState extends State<PetDetailsScreen> {
                                 pet.name,
                                 style: Theme.of(context)
                                     .textTheme
-                                    .bodyLarge
-                                    ?.copyWith(
-                                        fontSize: 30, color: Colors.white),
+                                    .headline3
+                                    ?.copyWith(color: Colors.white),
                               ),
                             ),
                           )
@@ -79,31 +79,32 @@ class _PetDetailsScreenState extends State<PetDetailsScreen> {
                 padding: EdgeInsets.symmetric(
                     vertical: 10,
                     horizontal: ThemeConstants.scaffoldHorizontalPadding),
-                child: Row(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '${pet.age} years old',
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                        Text(
-                          'Breed: ${pet.breed}',
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      ],
+                    Text(
+                      '${pet.age} years old',
+                      style: Theme.of(context).textTheme.subtitle1,
                     ),
-                    buildPetPriceContainer(pet, context)
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      'Breed: ${pet.breed}',
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
                   ],
                 ),
-              )
+              ),
+              buildPetPriceContainer(pet, context)
             ],
           )),
           Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: ThemeConstants.scaffoldHorizontalPadding),
+                horizontal: ThemeConstants.scaffoldHorizontalPadding,
+                vertical: 10),
             child: ElevatedButton(
               onPressed: pet.isAdopted
                   ? null
@@ -111,9 +112,18 @@ class _PetDetailsScreenState extends State<PetDetailsScreen> {
                       Provider.of<PetProvider>(context, listen: false)
                           .adoptPet(pet);
                     },
-              child: Container(
-                  width: double.infinity,
-                  child: Center(child: Text("Adopt me"))),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Container(
+                    width: double.infinity,
+                    child: Center(
+                        child: Text(
+                      "Adopt me",
+                      style: TextStyle(
+                          fontSize:
+                              Theme.of(context).textTheme.headline6?.fontSize),
+                    ))),
+              ),
             ),
           )
         ],
@@ -146,17 +156,25 @@ class _PetDetailsScreenState extends State<PetDetailsScreen> {
   }
 
   Widget buildPetPriceContainer(Pet pet, BuildContext context) {
-    return Container(
-        decoration: BoxDecoration(
-            border: Border.all(color: Colors.blue.shade900),
-            borderRadius: BorderRadius.circular(5)),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          child: Text(
-            '\$${pet.price}',
-            style:
-                Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 15),
-          ),
-        ));
+    return Center(
+      child: Container(
+          height: 50,
+          width: 100,
+          decoration: BoxDecoration(
+              border: Border.all(color: Colors.blue.shade900),
+              borderRadius: BorderRadius.circular(5)),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            child: Center(
+              child: Text(
+                '\$${pet.price}',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge
+                    ?.copyWith(fontSize: 15),
+              ),
+            ),
+          )),
+    );
   }
 }
