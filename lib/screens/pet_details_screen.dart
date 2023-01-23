@@ -19,7 +19,7 @@ class PetDetailsScreen extends StatefulWidget {
 }
 
 class _PetDetailsScreenState extends State<PetDetailsScreen> {
-  ConfettiController _confettiController = ConfettiController();
+  final ConfettiController _confettiController = ConfettiController();
   @override
   Widget build(BuildContext context) {
     var args =
@@ -154,7 +154,7 @@ class _PetDetailsScreenState extends State<PetDetailsScreen> {
           backgroundColor: Colors.green,
           content: Text("Congrats... You adopted ${pet.name}")));
       _confettiController.play();
-      Timer(Duration(seconds: 2), () {
+      Timer(const Duration(seconds: 2), () {
         _confettiController.stop();
       });
     }
@@ -178,7 +178,7 @@ class _PetDetailsScreenState extends State<PetDetailsScreen> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text("Close"))
+                  child: const Text("Close"))
             ],
           );
         });

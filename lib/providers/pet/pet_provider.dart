@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:pet_adopt/constants/pet/database_constant.dart';
-import 'package:pet_adopt/constants/pet/pet_constants.dart';
 import 'package:pet_adopt/models/pet/pet.dart';
 import 'package:pet_adopt/models/pet/pet_filter.dart';
 import 'package:sqflite/sqflite.dart';
@@ -14,13 +13,10 @@ class PetProvider extends ChangeNotifier {
 
   void searchPets() async {
     // FETCHING 10 ITEMS FROM PetConstants list of pets
-    // var fetchedPets = PetConstants.pets.skip(_pets.length).take(10).toList();
 
     Database db = await PetsDatabase().database;
     List<Map<String, dynamic>> fetchedPets =
-        await db.rawQuery('SELECT * FROM pet LIMIT 10 OFFSET ${_pets.length}')
-            as List<Map<String, dynamic>>;
-    print('fetched pets is $fetchedPets');
+        await db.rawQuery('SELECT * FROM pet LIMIT 10 OFFSET ${_pets.length}');
     // CONVERTING TO LIST OF DART OBJECT
     List<Pet> pets = fetchedPets.map<Pet>((pet) => Pet.fromJson(pet)).toList();
     addPets(pets);
@@ -46,7 +42,6 @@ class PetProvider extends ChangeNotifier {
 
     List<Map<String, dynamic>> fetchedPets = await db.rawQuery(
         '''SELECT * FROM pet WHERE is_adopted = '1' ORDER BY adopted_time ''');
-    print('fetched pets is $fetchedPets');
     // CONVERTING TO LIST OF DART OBJECT
     List<Pet> pets = fetchedPets.map<Pet>((pet) => Pet.fromJson(pet)).toList();
     return pets;

@@ -30,10 +30,9 @@ class _AdoptedPetsScreenState extends State<AdoptedPetsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(_adoptedPets);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Adopted Pets'),
+        title: const Text('Adopted Pets'),
       ),
       body: _adoptedPets.isNotEmpty
           ? ListView.builder(
@@ -42,7 +41,7 @@ class _AdoptedPetsScreenState extends State<AdoptedPetsScreen> {
                     pet: _adoptedPets[index],
                     showAdoptedTime: true,
                   )))
-          : Center(child: Text("No pets adopted yet!")),
+          : const Center(child: Text("No pets adopted yet!")),
     );
   }
 }

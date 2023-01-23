@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [ChangeNotifierProvider(create: (_) => PetProvider())],
       child: MaterialApp(
-        title: 'Behance',
+        title: 'Pet adopt',
         debugShowCheckedModeBanner: false,
         theme: ThemeConstants.lightTheme,
         darkTheme: ThemeConstants.darkTheme,

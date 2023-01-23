@@ -60,7 +60,7 @@ class _PetListScreenState extends State<PetListScreen> {
             PopupMenuButton(
                 onSelected: (value) => _popupSelectHandler(value),
                 itemBuilder: (ctx) => [
-                      PopupMenuItem(
+                      const PopupMenuItem(
                         child: Text("Adopted Pets"),
                         value: PopupOptions.AdoptedPets,
                       )
@@ -82,7 +82,7 @@ class _PetListScreenState extends State<PetListScreen> {
             Expanded(
               child: Consumer<PetProvider>(
                 builder: (ctx, petModal, _) => petModal.pets.isEmpty
-                    ? Center(
+                    ? const Center(
                         child: Text("No pets found"),
                       )
                     : ListView.builder(
@@ -127,7 +127,6 @@ class _PetListScreenState extends State<PetListScreen> {
         break;
       default:
     }
-    print(value);
   }
 
   unFocusKeyBoard() {

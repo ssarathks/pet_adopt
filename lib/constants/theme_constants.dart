@@ -20,24 +20,12 @@ class ThemeConstants {
       titleTextStyle: TextStyle(
           color: Colors.black, fontSize: 25, fontWeight: FontWeight.bold),
     ),
-    bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        selectedItemColor: Colors.black, unselectedItemColor: Colors.black26),
-    bottomSheetTheme: const BottomSheetThemeData(
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(10), topRight: Radius.circular(10))),
-    ),
     scaffoldBackgroundColor: ColorConstants.lightThemeScaffoldColor,
   );
 
   static ThemeData darkTheme = ThemeData(
     fontFamily: 'Roboto',
     brightness: Brightness.dark,
-    bottomSheetTheme: const BottomSheetThemeData(
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(10), topRight: Radius.circular(10))),
-    ),
     appBarTheme: const AppBarTheme(
         elevation: 0,
         backgroundColor: ColorConstants.darkThemeScaffoldColor,

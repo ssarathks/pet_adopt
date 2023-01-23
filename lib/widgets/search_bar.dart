@@ -25,14 +25,14 @@ class SearchBar extends StatelessWidget {
               Expanded(
                   child: TextFormField(
                 controller: _nameFilterController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Search with name',
                   border: InputBorder.none,
                 ),
               )),
               IconButton(
                   onPressed: () => onSearched(_nameFilterController.text),
-                  icon: Icon(Icons.search))
+                  icon: const Icon(Icons.search))
             ],
           ),
         ]),
